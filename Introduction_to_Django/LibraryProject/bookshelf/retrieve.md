@@ -1,6 +1,2 @@
-#retrieve.md
-book = Book.objects.all()
-print(book.author)
-
-#Expected Output
-George Orwell
+```python
+Book.objects.get(title="1984")
