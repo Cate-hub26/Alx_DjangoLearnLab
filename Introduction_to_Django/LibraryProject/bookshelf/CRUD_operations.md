@@ -1,29 +1,22 @@
+```python
+
 #create.md
 from bookshelf.models import Book
-new_book = Book(title="1984", author="George Orwell", publication_year=1949)
-new_book.save()
-
-#Expected Output
-1984
+Book.objects.create(title="1984", author="George Orwell", publication_year=1949)
 
 #retrieve.md
-book = Book.objects.all()
-print(book.author)
+Book.objects.get(title="1984")
 
-#Expected Output
-George Orwell
-
-#retrieve.md
-book = Book.objects.all()
-print(book.author)
-
-#Expected Output
-George Orwell
+#update.md
+book = Book(title="1984", author="George Orwell", publication_year=1949)
+book.title = "Nineteen Eighty-Four"
+book.save()
 
 #delete.md
+from bookshelf.models import Book
 book.delete()
 
-#Expected Output
-(1, {'bookshelf.Book': 1})
+
+
 
 
