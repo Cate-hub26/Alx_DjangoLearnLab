@@ -1,3 +1,4 @@
 ```python
-Book.title = "Nineteen Eighty-Four"
-Book.save()
+book = Book(title="1984", author="George Orwell", publication_year=1949)
+book.title = "Nineteen Eighty-Four"
+book.save()
