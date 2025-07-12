@@ -1,5 +1,4 @@
-#delete.md
-book.delete()
+```python
 
-#Expected Output
-(1, {'bookshelf.Book': 1})
+from bookshelf.models import Book
+book.delete()
