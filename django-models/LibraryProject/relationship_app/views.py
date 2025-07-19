@@ -4,7 +4,7 @@ from .models import Book
 
 def list_books(request):
     books = Book.objects.all()
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+    return render(request, 'relationship_app/templates/books/list_books.html', {'books': books})
 
 
 from .models import Library
