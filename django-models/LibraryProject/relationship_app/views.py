@@ -3,7 +3,7 @@ from django.views.generic.detail import DetailView
 from .models import Book
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.views.generic import CreateView
+from django.views.generic import CreateView 
 from django.urls import reverse_lazy
 
 class SignUpView(CreateView):
