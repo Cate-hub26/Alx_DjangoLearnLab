@@ -3,7 +3,7 @@ from .models import Book, Library, Librarian
 Book.objects.filter(author='authorname')
 
 #List all books in a library
-Library.objects.get(library=library_name)
+Library.objects.get(library='name')
 books = Book.objects.all()
 books.all()
 
