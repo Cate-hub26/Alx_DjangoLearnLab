@@ -1,3 +1,17 @@
 from django.shortcuts import render
+from django.views.generic.detail import DetailView
+from .models import Book, Library
 
-# Create your views here.
+def list_books(request):
+    books = Book.objects.select_related('author').all()
+    return render(request, 'books/book_list.html', {'books': books})
+
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'libraries/library_detail.html'
+    context_object_name = 'library'
+    
+    def get_context_object_name(self, **kwargs):
+        context = super().get_context_object_name(**kwargs)
+        context['books'] = self.object.books.all()
+        return context
