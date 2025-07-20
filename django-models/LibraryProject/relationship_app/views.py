@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView 
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 
 class SignUpView(CreateView):
     form_class = UserCreationForm()
@@ -52,5 +52,10 @@ def is_member(user):
 @user_passes_test(is_member)
 def librarian_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+@permission_required('relationship_app.can_add_book')
+def add_book(request):
+    return render(request, 'relationship_app/add_book.html')
+    
 
         
