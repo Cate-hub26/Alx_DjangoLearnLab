@@ -30,8 +30,7 @@ class LibraryDetailView(DetailView):
         return context
     
 @user_passes_test   
-def admin_view(request):
-    user = UserCreationForm()
+def admin_view(request, user):
     user.UserProfile.role == 'Admin'
     return render(request, 'relationship_app/admin_view.html')
 
