@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView 
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import  permission_required, user_passes_test, login_required
+from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 
 class SignUpView(CreateView):
     form_class = UserCreationForm()
