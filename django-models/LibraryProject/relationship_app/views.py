@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
-from .models import Book
+from .models import Book, UserProfile
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView 
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import user_passes_test
 
 class SignUpView(CreateView):
     form_class = UserCreationForm()
@@ -27,3 +28,13 @@ class LibraryDetailView(DetailView):
         context = super().get_context_object_name(**kwargs)
         context['books'] = self.object.books.all()
         return context
+@user_passes_test   
+def admin_view(user):
+    return user.UserProfile.role == 'Admin'
+
+def librarian_view(user):
+    return user.UserProfile.role == 'Librarian'
+
+def member_view(user):
+    return user.UserProfile.role == 'Member'
+        
