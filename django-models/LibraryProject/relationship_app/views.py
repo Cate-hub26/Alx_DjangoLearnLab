@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView 
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 
 class SignUpView(CreateView):
     form_class = UserCreationForm()
@@ -28,13 +28,17 @@ class LibraryDetailView(DetailView):
         context = super().get_context_object_name(**kwargs)
         context['books'] = self.object.books.all()
         return context
+    
 @user_passes_test   
-def admin_view(user):
-    return user.UserProfile.role == 'Admin'
+def admin_view(request):
+    user = UserCreationForm()
+    user.UserProfile.role == 'Admin'
+    return render(request, 'relationship_app/admin_view.html')
 
 def librarian_view(user):
     return user.UserProfile.role == 'Librarian'
 
 def member_view(user):
     return user.UserProfile.role == 'Member'
+    
         
