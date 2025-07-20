@@ -28,16 +28,13 @@ class LibraryDetailView(DetailView):
         context = super().get_context_object_name(**kwargs)
         context['books'] = self.object.books.all()
         return context
+
+def is_admin(user):
+    return user.is_authenticated and user.userprofile.role == 'Admin'
     
-@user_passes_test   
-def admin_view(request, user):
-    user.UserProfile.role == 'Admin'
+@login_required
+@user_passes_test(is_admin)
+def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
-
-def librarian_view(user):
-    return user.UserProfile.role == 'Librarian'
-
-def member_view(user):
-    return user.UserProfile.role == 'Member'
     
         
