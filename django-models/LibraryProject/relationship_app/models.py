@@ -33,5 +33,15 @@ class Librarian(models.Model):
         return self.name
     
 class UserProfile(models.Model):
+    Role_Choices = (
+    ('Admin', 'Administrator'),
+    ('Librarian', 'Library Staff'),
+    ('Member', 'Registered Member'),
+    )
     user = models.OneToOneField(User, related_name='userprofile')
-    role = models.CharField(max_length=200, choices=('Admin', 'Librarian', 'Member'))
+    role = models.CharField(max_length=200, choices=Role_Choices)
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.role}"
+
+    
