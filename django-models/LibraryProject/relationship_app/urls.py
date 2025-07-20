@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin 
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import list_books, LibraryDetailView, admin_view
+from .views import list_books, LibraryDetailView, admin_view, librarian_view, member_view
 from . import views
 
 urlpatterns = [
@@ -28,6 +28,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('admin-dashboard/', admin_view, name='admin_view'),
-    path('librarian_view/', views.librarian_view, name='librarian_view'),
-    path('member_view/', views.member_view, name='member_view'),
+    path('librarian_view/', librarian_view, name='librarian_view'),
+    path('member_view/', member_view, name='member_view'),
 ]

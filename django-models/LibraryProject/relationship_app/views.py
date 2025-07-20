@@ -37,4 +37,20 @@ def is_admin(user):
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
     
+def is_librarian(user):
+    return user.is_authenticated and user.userproile.role == 'Librarian'
+
+@login_required
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+def is_member(user):
+    return user.is_authenticated and user.userproile.role == 'Member'
+
+@login_required
+@user_passes_test(is_member)
+def librarian_view(request):
+    return render(request, 'relationship_app/member_view.html')
+
         
