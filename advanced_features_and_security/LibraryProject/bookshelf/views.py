@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView 
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
+from django.http import HttpResponseServerError
 
 class SignUpView(CreateView):
     form_class = UserCreationForm()
@@ -70,5 +71,8 @@ def delete_book(request):
 @permission_required('bookshelf.can_delete')
 def delete_book(request):
     return render(request, 'bookshelf/delete_book.html')
+
+def raise_exception(request):
+    raise Exception("Intentional exception for testing!")
 
         

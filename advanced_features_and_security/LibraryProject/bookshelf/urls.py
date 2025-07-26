@@ -17,12 +17,12 @@ Including another URLconf
 from django.contrib import admin 
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import LibraryDetailView, list_books, admin_view, librarian_view, member_view
+from .views import LibraryDetailView, book_list, admin_view, librarian_view, member_view
 from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('books/', list_books, name='list_books'),
+    path('books/', book_list, name='book_list'),
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='list_books'),
     path('register', views.register, name='register'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
@@ -32,5 +32,6 @@ urlpatterns = [
     path('member_view/', member_view, name='member_view'),
     path('add_book/', views.add_book, name='add_book'),
     path('edit_book/<int:book_id>/', views.edit_book, name='edit_book'),
-    path('delete_book/<int:book_id>/', views.delete_book, name='delete_book')
+    path('delete_book/<int:book_id>/', views.delete_book, name='delete_book'),
+    path('error/', views.raise_exception, name='raise_exception')
 ]
