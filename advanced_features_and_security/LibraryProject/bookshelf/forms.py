@@ -1,5 +1,5 @@
 from django.forms import forms
 
-class CustomUserForm(forms.Form):
+class ExampleForm(forms.Form):
     customuser = forms.CharField(max_length=100)
 
