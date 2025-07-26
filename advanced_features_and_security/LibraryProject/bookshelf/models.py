@@ -5,13 +5,14 @@ from django.contrib.auth.decorators import permission_required
 
 from django.db import models
 from django.contrib.auth import User
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.decorators import permission_required
 
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField()
     profile_photo = models.ImageField()
     
+class CustomUserManager(BaseUserManager):
     def create_user(model, fields):
         model = CustomUser
         fields = ['date_of_birth', 'profile_photo']
