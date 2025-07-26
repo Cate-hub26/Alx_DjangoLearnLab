@@ -1,6 +1,4 @@
 from django.shortcuts import render
-
-from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from .models import Book, UserProfile
 from django.contrib.auth import login
@@ -8,8 +6,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView 
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
-from django.http import HttpResponseServerError
+from .forms import CustomUserForm
 
+form = CustomUserForm(request.GET)
+if form.is_valid():
+    query = form.cleaned_data['customuser']
+    
 class SignUpView(CreateView):
     form_class = UserCreationForm()
     success_url = reverse_lazy('login')
