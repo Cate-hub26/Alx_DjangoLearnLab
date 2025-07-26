@@ -56,23 +56,20 @@ def is_member(user):
 def librarian_view(request):
     return render(request, 'relationship_app/member_view.html')
 
-@permission_required('bookshelf.can_view')
+@permission_required('bookshelf.can_view', raise_exception=True)
 def add_book(request):
     return render(request, 'bookshelf/view_book.html')
 
-@permission_required('bookshelf.can_create')
+@permission_required('bookshelf.can_create', raise_exception=True)
 def edit_book(request):
     return render(request, 'bookshelf/create_book.html')
 
-@permission_required('bookshelf.can_edit')
+@permission_required('bookshelf.can_edit', raise_exception=True)
 def delete_book(request):
     return render(request, 'bookshelf/edit_book.html')
     
-@permission_required('bookshelf.can_delete')
+@permission_required('bookshelf.can_delete', raise_exception=True)
 def delete_book(request):
     return render(request, 'bookshelf/delete_book.html')
-
-def raise_exception(request):
-    raise Exception("Intentional exception for testing!")
 
         
