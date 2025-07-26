@@ -8,7 +8,7 @@ from django.contrib.auth import User
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.decorators import permission_required
 
-class CustomUser(models.AbstractUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField()
     profile_photo = models.ImageField()
     
