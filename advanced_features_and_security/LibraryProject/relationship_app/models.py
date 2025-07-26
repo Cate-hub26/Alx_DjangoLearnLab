@@ -1,22 +1,29 @@
 from django.db import models
-from django.contrib.auth import User
-from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import User, BaseUserManager, AbstractUser, Group, Permission
 
-class CustomUser(models.AbstractUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField()
     profile_photo = models.ImageField()
+    groups = models.ManyToManyField(
+        Group,
+        related_name='relationship_user_groups'
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='relationship_user_permissions'
+    )
     
 class Author(models.Model):
     name = models.CharField(max_length=200)
     
     def __str__(self):
         return self.name
-    
-@permission_required        
+            
 class Book(models.Model):    
     title = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+    publication_year = models.IntegerField(null=True, blank=True)
     
     class Meta:
         permissions = (
@@ -48,7 +55,7 @@ class UserProfile(models.Model):
     ('Librarian', 'Library Staff'),
     ('Member', 'Registered Member'),
     )
-    user = models.OneToOneField(CustomUser, related_name='userprofile')
+    user = models.OneToOneField(CustomUser, related_name='userprofile', on_delete=models.CASCADE)
     role = models.CharField(max_length=200, choices=Role_Choices)
     
     def __str__(self):

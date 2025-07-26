@@ -55,20 +55,17 @@ def is_member(user):
 def librarian_view(request):
     return render(request, 'relationship_app/member_view.html')
 
-@permission_required('bookshelf.can_view')
+@permission_required('relationship_app.can_add_book')
 def add_book(request):
-    return render(request, 'bookshelf/view_book.html')
+    return render(request, 'relationship_app/add_book.html')
 
-@permission_required('bookshelf.can_create')
+@permission_required('relationship_app.can_change_book')
 def edit_book(request):
-    return render(request, 'bookshelf/create_book.html')
+    return render(request, 'relationship_app/change_book.html')
 
-@permission_required('bookshelf.can_edit')
+@permission_required('relationship_app.can_delete_book')
 def delete_book(request):
-    return render(request, 'bookshelf/edit_book.html')
+    return render(request, 'relationship_app/delete_book.html')
     
-@permission_required('bookshelf.can_delete')
-def delete_book(request):
-    return render(request, 'bookshelf/delete_book.html')
 
         
