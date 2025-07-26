@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.contrib.auth import User
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.decorators import permission_required
@@ -13,14 +14,12 @@ class CustomUser(AbstractUser):
     profile_photo = models.ImageField()
     
 class CustomUserManager(BaseUserManager):
-    def create_user(model, fields):
-        model = CustomUser
-        fields = ['date_of_birth', 'profile_photo']
-        
-    def create_superuser(admin):
-        admin = CustomUser()
-        
-class ModelAdmin(CustomUser):
+    def create_user(self, email, password=None, date_of_birth, profile_photo):
+        pass
+    def create_superuser(self, email, password=None, date_of_birth, profile_photo)  :
+        pass
+
+admin.site.register(CustomUser, CustomUserAdmin)
     
 class Author(models.Model):
     name = models.CharField(max_length=200)
