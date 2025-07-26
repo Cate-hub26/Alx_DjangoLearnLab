@@ -7,15 +7,6 @@ class CustomUser(models.AbstractUser):
     date_of_birth = models.DateField()
     profile_photo = models.ImageField()
     
-    def create_user(model, fields):
-        model = CustomUser
-        fields = ['date_of_birth', 'profile_photo']
-        
-    def create_superuser(admin):
-        admin = CustomUser()
-        
-class ModelAdmin(CustomUser):
-    
 class Author(models.Model):
     name = models.CharField(max_length=200)
     

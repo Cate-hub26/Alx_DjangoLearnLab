@@ -16,10 +16,8 @@ class CustomUser(AbstractUser):
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, date_of_birth, profile_photo):
         pass
-    def create_superuser(self, email, password=None, date_of_birth, profile_photo)  :
+    def create_superuser(self, email, password=None, date_of_birth, profile_photo):
         pass
-
-admin.site.register(CustomUser, CustomUserAdmin)
     
 class Author(models.Model):
     name = models.CharField(max_length=200)
