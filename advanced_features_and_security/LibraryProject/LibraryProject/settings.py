@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = [
-    'relationship_app.CustomUser'
+    'bookshelf.CustomUser'
 ]
 
 MIDDLEWARE = [
