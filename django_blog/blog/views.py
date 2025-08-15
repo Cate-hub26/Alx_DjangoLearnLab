@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, UserForm, ProfileForm, PostForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import CustomUserCreationForm, UserForm, ProfileForm, PostForm, CommentForm
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView 
 from django.contrib.auth.views import LoginView as AuthLoginView, LogoutView as AuthLogoutView
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Post
+from .models import Post, Comment
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -86,6 +86,73 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object()
         return post.author == self.request.user
     
+@login_required
+def create_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    form = CommentForm(request.POST or None)
+    
+    if request.method == 'POST' and form.is_valid():
+        comment = form.save(commit=False)
+        comment.user = request.user
+        comment.post = post
+        comment.save()
+        return redirect('post_detail', post_id=post.id)
+    
+    return render(request, 'comment_form.html', {'form': form, 'post': post})
+
+@login_required
+def update_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+    form = CommentForm(request.POST or None, instance=comment)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('post_detail', post_id=comment.post.id)
+
+    return render(request, 'comment_form.html', {'form': form, 'post': comment.post})
+    
+class CommentListView(ListView):
+    model = Comment
+    template_name = 'blog/comment_list.html'
+    context_object_name = 'comments'
+    
+    def get_queryset(self):
+        post_id = self.kwargs.get('post_id')
+        return Comment.objects.filter(post__id=post_id)
+    
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+    success_url = reverse_lazy('post-detail')
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = get_object_or_404(
+            Post, id=self.kwargs['post_id']
+        )
+        return super().form_valid(form)
+        
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+    success_url = reverse_lazy('post-detail')
+
+    def test_func(self):
+        comment = self.get_object()
+        return comment.author == self.request.user
+    
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+    success_url = reverse_lazy('post-detail')
+    
+    def test_func(self):
+        comment = self.get_object()
+        return comment.author == self.request.user
+
+
 
 
     

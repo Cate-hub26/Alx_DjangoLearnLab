@@ -1,0 +1,24 @@
+<div class="mt-4">
+    <h5>Comments ({{ comments.count }})</h5>
+    <hr>
+
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="mb-3 p-3 border rounded">
+                <p>{{ comment.content }}</p>
+                <small class="text-muted">
+                    Posted by {{ comment.author.username }} on {{ comment.created_at|date:"F j, Y, g:i a" }}
+                </small>
+
+                {% if user == comment.author %}
+                    <div class="mt-2">
+                        <a href="{% url 'comment-update' comment.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a href="{% url 'comment-delete' comment.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No comments yet. Be the first to share your thoughts!</p>
+    {% endif %}
+</div>

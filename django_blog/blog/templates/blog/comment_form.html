@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h4>{{ view.object.pk|yesno:"Edit Comment,Add Comment" }}</h4>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">
+            {{ view.object.pk|yesno:"Update,Post" }}
+        </button>
+    </form>
+</div>
+{% endblock %}
