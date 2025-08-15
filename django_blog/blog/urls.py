@@ -1,7 +1,8 @@
 from django.urls import path, include
 from .views import (
     LoginView, LogoutView, ProfileView, SignUpView, profile_view,
-    PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
+    PostListView, PostDetailView, PostCreateView, PostUpdateView, 
+    PostDeleteView
 )
 
 urlpatterns = [
