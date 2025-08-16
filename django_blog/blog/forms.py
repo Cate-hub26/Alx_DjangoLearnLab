@@ -24,7 +24,7 @@ class ProfileForm(forms.ModelForm):
         fields = ['bio']  
         
 class PostForm(forms.ModelForm):
-    tags = TagField(required=False, widget=TagWidget())
+    tags = TagField(required=False, widgets=TagWidget())
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
