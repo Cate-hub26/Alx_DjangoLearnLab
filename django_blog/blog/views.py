@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 from django.db.models import Q
 
 class SignUpView(CreateView):
@@ -177,10 +177,19 @@ def search_posts(request):
 
     return render(request, 'blog/search_results.html', {'results': results, 'query': query})
 
-def posts_by_tag(request, tag_name):
-    posts = Post.objects.filter(tag__name=tag_name)
-    return render(request, 'blog/posts_by_tag', {'posts': posts, 'tag_name': tag_name})
-    
+from django.views.generic import ListView
+from .models import Post, Tag
+from django.shortcuts import get_object_or_404
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list_by_tag.html' 
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        return Post.objects.filter(tags__in=[tag])
 
         
 
