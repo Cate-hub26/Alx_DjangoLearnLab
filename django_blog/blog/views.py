@@ -10,19 +10,22 @@ from django.contrib import messages
 from .models import Post, Comment, Tag
 from django.db.models import Q
 
+def home(request):
+    return render(request, 'blog/home.html')
+
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
-    template_name = 'register.html'
+    template_name = 'blog/register.html'
     
 class LoginView(AuthLoginView):
-    template_name = 'login.html'
+    template_name = 'blog/login.html'
 
 class LogoutView(AuthLogoutView):
-    template_name = 'logout.html'
+    template_name = 'blog/logout.html'
 
 class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'profile.html'
+    template_name = 'blog/profile.html'
     login_url = 'login'
     
 @login_required
@@ -176,10 +179,6 @@ def search_posts(request):
         ).distinct()
 
     return render(request, 'blog/search_results.html', {'results': results, 'query': query})
-
-from django.views.generic import ListView
-from .models import Post, Tag
-from django.shortcuts import get_object_or_404
 
 class PostByTagListView(ListView):
     model = Post
