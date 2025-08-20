@@ -2,19 +2,22 @@ from django.shortcuts import get_object_or_404
 from .serializers import RegisterUserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import get_user_model
+from rest_framework import permissions
+from .models import CustomUser
 
-User = get_user_model
+class UserListView(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = RegisterUserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-class FollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request, user_id):
-        target_user = get_object_or_404(User, id=user_id)
+        target_user = get_object_or_404(CustomUser, id=user_id)
         
         if target_user == request.user:
             return Response(
@@ -28,11 +31,11 @@ class FollowUserView(APIView):
             status=status.HTTP_200_OK
         )
         
-class UnfollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request, user_id):
-        target_user = get_object_or_404(User, id=user_id)
+        target_user = get_object_or_404(CustomUser, id=user_id)
         
         if target_user == request.user:
             return Response(
@@ -45,9 +48,7 @@ class UnfollowUserView(APIView):
             {'message': f'You have unfollowed {target_user.username}.'}, 
             status=status.HTTP_200_OK
         )
-
-    
-        
+         
 class RegisterUserView(APIView):
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)
@@ -67,7 +68,7 @@ class CustomLoginView(ObtainAuthToken):
         })
         
 class UserProfileView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request):
         serializer = RegisterUserSerializer(request.user)
