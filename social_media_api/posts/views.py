@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from rest_framework.generics import get_object_or_404
 from rest_framework import viewsets, filters, permissions
 from rest_framework.views import APIView
 from .models import Post, Comment
@@ -51,10 +51,11 @@ class FeedView(APIView):
 class PostLikeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def like_post(request,post_id):
-        post = get_object_or_404(Post, id=post_id)
+        post = get_object_or_404(Post, pk=post_id)
         user = request.user
-    
-        if Like.objects.filter(user=user, post=post).exists():
+        
+        like, created = Like.objects.get_or_create(user=user, post=post)
+        if not created:
            return Response({'detail': 'You have already liked this post.'}, status=400)
     
         Like.objects.create(user=user, post=post)
@@ -74,7 +75,7 @@ class PostUnlikeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def unlike_post(request,post_id):
-        post = get_object_or_404(Post, id=post_id)
+        post = get_object_or_404(Post, pk=post_id)
         user = request.user
     
         like = Like.objects.create(user=user, post=post).first()
