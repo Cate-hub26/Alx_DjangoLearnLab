@@ -50,8 +50,8 @@ class FeedView(APIView):
     
 class PostLikeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-    def like_post(request,post_id):
-        post = generics.get_object_or_404(Post, pk=post_id)
+    def like_post(request,pk):
+        post = generics.get_object_or_404(Post, pk=pk)
         user = request.user
         
         like, created = Like.objects.get_or_create(user=user, post=post)
@@ -74,8 +74,8 @@ class PostLikeView(APIView):
 class PostUnlikeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def unlike_post(request,post_id):
-        post = generics.get_object_or_404(Post, pk=post_id)
+    def unlike_post(request,pk):
+        post = generics.get_object_or_404(Post, pk=pk)
         user = request.user
     
         like = Like.objects.create(user=user, post=post).first()
