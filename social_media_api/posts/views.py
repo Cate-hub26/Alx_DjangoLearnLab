@@ -1,4 +1,4 @@
-from rest_framework.generics import get_object_or_404
+from rest_framework import generics
 from rest_framework import viewsets, filters, permissions
 from rest_framework.views import APIView
 from .models import Post, Comment
@@ -51,7 +51,7 @@ class FeedView(APIView):
 class PostLikeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def like_post(request,post_id):
-        post = get_object_or_404(Post, pk=post_id)
+        post = generics.get_object_or_404(Post, pk=post_id)
         user = request.user
         
         like, created = Like.objects.get_or_create(user=user, post=post)
@@ -75,7 +75,7 @@ class PostUnlikeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def unlike_post(request,post_id):
-        post = get_object_or_404(Post, pk=post_id)
+        post = generics.get_object_or_404(Post, pk=post_id)
         user = request.user
     
         like = Like.objects.create(user=user, post=post).first()
