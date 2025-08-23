@@ -20,7 +20,7 @@ class NotificationListView(APIView):
                     'id': n.id,
                     'actor': n.actor.username,
                     'verb': n.verb,
-                    'target_type': n.target_content_type.model,
+                    'target_type': n.target_content_type.model if n.target_content_type else None,
                     'target_id': n.target_object_id,
                     'timestamp': n.timestamp
                 } for n in all_notifications

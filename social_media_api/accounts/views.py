@@ -53,8 +53,14 @@ class RegisterUserView(APIView):
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+            user = serializer.save()
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response(
+                {'message': 'User registered successfully',
+                 "token": token.key
+                }, 
+                status=status.HTTP_201_CREATED
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class CustomLoginView(ObtainAuthToken):
