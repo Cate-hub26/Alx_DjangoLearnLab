@@ -75,7 +75,7 @@ class PostUnlikeView(APIView):
     def post(self, request, pk):
         post = generics.get_object_or_404(Post, pk=pk)
     
-        like = Like.objects.create(author=request.user, post=post)
+        like = Like.objects.create(user=request.user, post=post)
     
         if not like:
             return Response({'detail': 'You have not liked this post.'}, status=400)

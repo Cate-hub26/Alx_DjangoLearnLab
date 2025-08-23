@@ -67,7 +67,7 @@ class LikeNotificationTests(TestCase):
 
         # Like object created
         self.assertTrue(
-        Like.objects.filter(author=self.liker, post=self.post).exists()
+        Like.objects.filter(user=self.liker, post=self.post).exists()
         )
 
         # Notification created
@@ -82,15 +82,15 @@ class LikeNotificationTests(TestCase):
 
 
     def test_duplicate_like_is_prevented(self):
-        Like.objects.create(author=self.liker, post=self.post)
+        Like.objects.create(user=self.liker, post=self.post)
         url = reverse('post-like', args=[self.post.id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 400)  # Or 409 if you prefer conflict
 
     def test_unlike_post_removes_like(self):
-        Like.objects.create(author=self.liker, post=self.post)
+        Like.objects.create(user=self.liker, post=self.post)
         url = reverse('post-unlike', args=[self.post.id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 200)
-        Like.objects.filter(author=self.liker, post=self.post).delete()
-        self.assertFalse(Like.objects.filter(author=self.liker, post=self.post).exists())
+        Like.objects.filter(user=self.liker, post=self.post).delete()
+        self.assertFalse(Like.objects.filter(user=self.liker, post=self.post).exists())

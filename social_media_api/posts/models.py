@@ -31,7 +31,7 @@ class Like(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='likes'
     )
-    author = models.ForeignKey(
+    user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='likes'
     )
 
