@@ -11,7 +11,6 @@ from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.views import APIView
 
-
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -53,11 +52,11 @@ class PostLikeView(APIView):
     def post(self, request, pk):
         post = generics.get_object_or_404(Post, pk=pk)
         
-        like, created = Like.objects.get_or_create(author=request.user, post=post)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
         if not created:
            return Response({'detail': 'You have already liked this post.'}, status=400)
     
-        Like.objects.create(author=request.user, post=post)
+        Like.objects.create(user=request.user, post=post)
     
         if post.author != request.user:
             Notification.objects.create(
